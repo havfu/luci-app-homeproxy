@@ -35,6 +35,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+
     steps:
       - name: Checkout source tree
         uses: actions/checkout@v4
@@ -53,13 +54,12 @@ jobs:
         if: github.event_name != 'release'
         with:
           name: ${{ env.ASSET_NAME }}
-          path: .github/*.ipk
+          path: .github/${{ env.ASSET_NAME }}
 
       - name: Publishing to GitHub Releases
         uses: svenstaro/upload-release-action@v2
         if: github.event_name == 'release'
         with:
-          repo_token: ${{ secrets.TOKEN }}
-          file: .github/*.ipk
+          repo_token: ${{ github.token }}
+          file: .github/${{ env.ASSET_NAME }}
           tag: ${{ github.ref }}
-          file_glob: true
